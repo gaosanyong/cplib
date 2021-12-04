@@ -5,7 +5,7 @@ NAME
 DESCRIPTION 
     This module implements a trie data structure via nested dictionaries. 
 
-    * Trie - trie class for storing and searching strings
+    * Trie  trie class for storing and searching strings
 
 CLASSES
     class Trie()

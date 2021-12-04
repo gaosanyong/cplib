@@ -5,8 +5,8 @@ NAME
 DESCRIPTION
     This module implements segment tree data structure. 
 
-    * SegTree     - segment tree
-    * SegTreeLazy - segment tree with lazy propagation
+    * SegTree      segment tree
+    * SegTreeLazy  segment tree with lazy propagation
 
 CLASSES
     SegTree(arr)

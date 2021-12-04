@@ -5,11 +5,11 @@ NAME
 DESCRIPTION
 	This module implements the many version of binary search. 
 
-	* bisect            - binary search the only true occurrence
-	* bisect_left       - binary search the left-most occurrence
-	* bisect_rigth      - binary search the right-most occurrence
-	* bisect_first_true - binary search the first true occurrence
-	* bisect_last_true  - binary search the last true occurrence
+	* bisect             binary search the only true occurrence
+	* bisect_left        binary search the left-most occurrence
+	* bisect_rigth       binary search the right-most occurrence
+	* bisect_first_true  binary search the first true occurrence
+	* bisect_last_true   binary search the last true occurrence
 
 FUNCTIONS
 	bisect(arr, x)

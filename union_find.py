@@ -6,8 +6,8 @@ DESCRIPTION
 	This module implements union-find data structure including 1) find with 
 	path compression and 2) union with rank. 
 
-	* UnionFind     - union-find implemented via array 
-	* UnionFindDict - union-find implemented via dictionary
+	* UnionFind      union-find implemented via array 
+	* UnionFindDict  union-find implemented via dictionary
 
 CLASSES
 	class UnionFind(n)

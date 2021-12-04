@@ -5,11 +5,11 @@ NAME
 DESCRIPTION
 	This module implements a few cp algorithms. 
 
-	* binpow  - binary exponentiation 
-	* gcd     - greatest common divisor via Euclidean algo
-	* lcm     - least common multiplier 
-	* choose  - binomial coefficient 
-	* catalan - Catalan number 
+	* binpow   binary exponentiation 
+	* gcd      greatest common divisor via Euclidean algo
+	* lcm      least common multiplier 
+	* choose   binomial coefficient 
+	* catalan  Catalan number 
 
 FUNCTIONS
 	binpow(x, n, m)

@@ -5,8 +5,8 @@ NAME
 DESCRIPTION
     This module implements Fenwick tree for prefix sum and prefix max.
 
-    * Fenwick    - Fenwick tree for prefix sum 
-    * FenwickMax - Fenwick tree for prefix max 
+    * Fenwick     Fenwick tree for prefix sum 
+    * FenwickMax  Fenwick tree for prefix max 
 
 CLASSES 
     class Fenwick(n)

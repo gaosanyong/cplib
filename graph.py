@@ -5,16 +5,16 @@ NAME
 DESCRIPTION
     This module implements a few graph-related algorithms. 
 
-    * tpsort         - topological sort via Kahn's algo
-    * tpsort3        - topological sort via tri-coloring
-    * tarjan         - find bridges (critical edges) via Tarjan's algo
-    * eulerian       - check if an Eulerian path exists
-    * hierholzer     - find Eulerian path
-    * dijkstra       - find shortest path via Dijkstra's algo (all positive edges)
-    * bellman_ford   - find shortest path via Bellman-Ford algo (negative edges)
-    * floyd_warshall - find shortest path for all pairs via Floyd-Warshall algo
-    * kruskal        - find minimum spanning tree via Kruskal's algo
-    * prim           - find minimum spanning tree via Prim's algo
+    * tpsort          topological sort via Kahn's algo
+    * tpsort3         topological sort via tri-coloring
+    * tarjan          find bridges (critical edges) via Tarjan's algo
+    * eulerian        check if an Eulerian path exists
+    * hierholzer      find Eulerian path
+    * dijkstra        find shortest path via Dijkstra's algo (all positive edges)
+    * bellman_ford    find shortest path via Bellman-Ford algo (negative edges)
+    * floyd_warshall  find shortest path for all pairs via Floyd-Warshall algo
+    * kruskal         find minimum spanning tree via Kruskal's algo
+    * prim            find minimum spanning tree via Prim's algo
 
 FUNCTIONS
     tpsort(graph, indeg) 

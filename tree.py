@@ -5,10 +5,10 @@ NAME
 DESCRIPTION
     This module implements a few tree-related algorithms. 
 
-    * dfs_preorder   - iterative preorder depth-first search
-    * dfs_inorder    - iterative inorder depth-first search
-    * dfs_postorder  - iterative postorder depth-first search
-    * bfs            - breadth-first search
+    * dfs_preorder    iterative preorder depth-first search
+    * dfs_inorder     iterative inorder depth-first search
+    * dfs_postorder   iterative postorder depth-first search
+    * bfs             breadth-first search
 
 FUNCTIONS
     dfs_preorder(root)

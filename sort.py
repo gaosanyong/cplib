@@ -5,12 +5,12 @@ NAME
 DESCRIPTION 
     This module implements a few sorting and related algorithms. 
 
-    * shuffle  - shuffle an array in-place
-    * insort   - insertion sort 
-    * qksort   - quick sort
-    * mgsort   - merge sort 
-    * qkselect - quick select
-    * part3    - Dijkstra's 3-way partitioning
+    * shuffle   shuffle an array in-place
+    * insort    insertion sort 
+    * qksort    quick sort
+    * mgsort    merge sort 
+    * qkselect  quick select
+    * part3     Dijkstra's 3-way partitioning
 
 FUNCTIONS
     shuffle(nums)

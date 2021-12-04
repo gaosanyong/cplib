@@ -5,10 +5,10 @@ NAME
 DESCRIPTION
     This module implements string-relatd algorithms.
 
-    * kmp         - string matching via Knuth-Moore-Pratt algo
-    * boyer_moore - string matching via Boyer-Moore algo
-    * rabin_karp  - string matching via Rabin-Karp algo
-    * manacher    - longest palindromic substring via Manacher's algo
+    * kmp          string matching via Knuth-Moore-Pratt algo
+    * boyer_moore  string matching via Boyer-Moore algo
+    * rabin_karp   string matching via Rabin-Karp algo
+    * manacher     longest palindromic substring via Manacher's algo
 
 FUNCTIONS
     kmp(pattern, text)
