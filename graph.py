@@ -107,12 +107,35 @@ def eulerian(graph):
 
 def hierholzer(graph):
     """Find an Eulerian path via Hierholzer algo"""
-    ans = []
+    degree = [0] * len(graph) # net out degree 
+    for u in graph:
+        degree[u] += len(graph[u]) 
+        for v in graph[u]: degree[v] -= 1
 
+    freq = Counter()
+    start = 0 
+    for i, x in enumerate(degree): 
+        if abs(x) > 1: return # no Eulerian path 
+        if abs(x) == 1: freq[x] += 1
+        if x == 1: start = x 
+
+    if any(v > 1 for x in freq.values()): return # no Eulerian path 
+
+    ans = []
+    # iterative Hierholzer's algo
+    stack = [start]
+    while stack: 
+        while graph[stack[-1]]: 
+            stack.append(graph[stack[-1]].pop())
+        ans.append(stack.pop())
+
+    """
+    # recursie Hierholzer's algo
     def fn(x): 
-        """Return Eulerian path via dfs."""
         while graph[x]: fn(graph[x].pop()) 
         ans.append(x)
+    fn(start)
+    """
 
     ans.reverse()
     return ans 
