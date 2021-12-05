@@ -90,39 +90,39 @@ def tarjan(graph: Dict[int, List[int]]) -> List[List[int]]:
     return ans 
 
 
-def eulerian(graph): 
-    """Check if an Eulerian path exists."""
-    indeg = [0]*len(graph)
-    outdeg = [0]*len(graph)
-    for u, nodes in graph: 
-        outdeg[u] = len(nodes)
-        for v in nodes: indeg[v] += 1
-    start = end = 0 
-    for x in range(len(graph)): 
-        if abs(indeg[x] - outdeg[x]) > 1: return False 
-        if outdeg[x] - indeg[x] == 1: start += 1
-        elif indeg[x] - outdeg[x] == 1: end += 1
-    return start == end == 0 or start == end == 1
+"""
+DEFINITIONS
+    * An Eulerian path is a path in a finite graph that visits every edge exactly once. 
+    * An Eulerian circuit is an Eulerian path that starts and ends on the same vertex.
 
+CONDITIONS
+    * A directed graph has an Eulerian cycle iff every vertex has equal in 
+      degree and out degree, and all of its vertices with nonzero degree belong 
+      to a single strongly connected component.
+    * A directed graph has an Eulerian trail iff at most one vertex has 
+      (out-degree) − (in-degree) = 1, at most one vertex has 
+      (in-degree) − (out-degree) = 1, every other vertex has equal in-degree and 
+      out-degree, and all of its vertices with nonzero degree belong to a single 
+      connected component of the underlying undirected graph.
+"""
 
 def hierholzer(graph):
     """Find an Eulerian path via Hierholzer algo"""
-    degree = [0] * len(graph) # net out degree 
-    for u in graph:
-        degree[u] += len(graph[u]) 
+    degree = [0]*len(graph) # net out degree 
+    for u in graph: 
+        degree[u] += len(graph[u])
         for v in graph[u]: degree[v] -= 1
-
-    freq = Counter()
-    start = 0 
-    for i, x in enumerate(degree): 
+    cnt0 = cnt1 = start = 0 
+    for x in degree: 
         if abs(x) > 1: return # no Eulerian path 
-        if abs(x) == 1: freq[x] += 1
-        if x == 1: start = x 
-
-    if any(v > 1 for x in freq.values()): return # no Eulerian path 
+        if x == 1: 
+            start = x
+            cnt0 += 1
+        elif x == -1: cnt1 += 1
+    if not (cnt0 == cnt1 == 0 or cnt0 == cnt1 == 1): return # no Eulerian path 
 
     ans = []
-    # iterative Hierholzer's algo
+    # iterative implementation of Hierholzer's algo
     stack = [start]
     while stack: 
         while graph[stack[-1]]: 
@@ -130,7 +130,7 @@ def hierholzer(graph):
         ans.append(stack.pop())
 
     """
-    # recursie Hierholzer's algo
+    # recursie implementation of Hierholzer's algo
     def fn(x): 
         while graph[x]: fn(graph[x].pop()) 
         ans.append(x)
