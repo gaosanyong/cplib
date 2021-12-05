@@ -111,14 +111,14 @@ def hierholzer(graph):
     for u in graph: 
         degree[u] += len(graph[u])
         for v in graph[u]: degree[v] -= 1
-    cnt0 = cnt1 = start = 0 
+    pos = neg = start = 0 
     for x in degree: 
         if abs(x) > 1: return # no Eulerian path 
         if x == 1: 
             start = x
-            cnt0 += 1
-        elif x == -1: cnt1 += 1
-    if not (cnt0 == cnt1 == 0 or cnt0 == cnt1 == 1): return # no Eulerian path 
+            pos += 1
+        elif x == -1: neg += 1
+    if not (pos == neg == 0 or pos == neg == 1): return # no Eulerian path 
 
     ans = []
     # iterative implementation of Hierholzer's algo
