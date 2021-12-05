@@ -8,7 +8,6 @@ DESCRIPTION
     * tpsort          topological sort via Kahn's algo
     * tpsort3         topological sort via tri-coloring
     * tarjan          find bridges (critical edges) via Tarjan's algo
-    * eulerian        check if an Eulerian path exists
     * hierholzer      find Eulerian path
     * dijkstra        find shortest path via Dijkstra's algo (all positive edges)
     * bellman_ford    find shortest path via Bellman-Ford algo (negative edges)
@@ -99,9 +98,9 @@ CONDITIONS
     * A directed graph has an Eulerian cycle iff every vertex has equal in 
       degree and out degree, and all of its vertices with nonzero degree belong 
       to a single strongly connected component.
-    * A directed graph has an Eulerian trail iff at most one vertex has 
+    * A directed graph has an Eulerian path iff at most one vertex has 
       (out-degree) − (in-degree) = 1, at most one vertex has 
-      (in-degree) − (out-degree) = 1, every other vertex has equal in-degree and 
+      (out-degree) − (in-degree) = -1, every other vertex has equal in-degree and 
       out-degree, and all of its vertices with nonzero degree belong to a single 
       connected component of the underlying undirected graph.
 """
@@ -128,15 +127,13 @@ def hierholzer(graph):
         while graph[stack[-1]]: 
             stack.append(graph[stack[-1]].pop())
         ans.append(stack.pop())
-
     """
-    # recursie implementation of Hierholzer's algo
+    # recursive implementation of Hierholzer's algo
     def fn(x): 
         while graph[x]: fn(graph[x].pop()) 
         ans.append(x)
     fn(start)
     """
-
     ans.reverse()
     return ans 
 
