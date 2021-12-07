@@ -63,9 +63,19 @@ def linear_sieve(n: int) -> List[int]:
     for i in range(2, n+1): 
         if spf[i] == i: prime.append(i)
         for x in prime: 
-            if not (x <= spf[i] and i*x <= n): break 
-            spf[i * x] = x 
+            if x <= spf[i] and i*x <= n: spf[i*x] = x
+            else: break 
     return spf
+
+    """
+    # alternative O(N*log(log(N))) spf routine 
+    spf = list(range(n+1))
+    for i in range(4, n+1, 2): spf[i] = 2
+    for i in range(3, int(sqrt(n+1))+1): 
+        if spf[i] == i: 
+            for ii in range(i*i, n+1, i): 
+                spf[ii] = min(spf[ii], i)
+    """
 
 """
 PRIMALITY TEST
