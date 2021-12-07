@@ -101,7 +101,6 @@ Zeckendorf's theorem:
 Any natural number n can be uniquely represented as a sum of Fibonacci numbers
 n = F(k1) + F(k2) + … + F(kr)
 such that k1 ≥ k2+2, k2 ≥ k3+2, …, kr ≥ 2 (i.e.: the representation cannot use two consecutive Fibonacci numbers).
-
 """
 
 def fibonacci(n): 
