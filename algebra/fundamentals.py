@@ -1,15 +1,15 @@
 """
-NAME 
-	fundamentals - miscellaneous cp algorithms
+NAME - fundamentals 
 
 DESCRIPTION
-	This module implements a few cp algorithms. 
-	
+	This module implements below algorithms:	
 	* binary exponentiation
 	* Euclidean algorithms for computing the greatest common divisor
 	* extended Euclidean algorithm
 	* linear Diophantine equations
 	* Fibonacci Numbers 
+		o closed-form solution
+		o fast doubling method
 
 FUNCTIONS
 	binpow(x, n, m)
@@ -31,7 +31,8 @@ FUNCTIONS
 
 """
 BINARY EXPONENTIATION
-Binary exponentiation is an O(logN) algo to compute x**n % m.
+
+Binary exponentiation calculates x**n % m in O(logN).
 """
 from typing import List
 
@@ -47,8 +48,8 @@ def binpow(x: int, n: int, m: int) -> int:
 
 """
 EUCLIDEAN ALGORITHM FOR COMPUTING THE GREATEST COMMON DIVISOR
-Euclidean algorithm is an O(log(min(M, N))) algo to compute greatest common 
-divisor.
+
+Euclidean algorithm calculates greatest common divisor in O(log(min(M, N))).
 """
 
 def gcd(x: int, y: int) -> int:
@@ -65,6 +66,9 @@ def lcm(x: int, y: int) -> int:
 
 """
 EXTENDED EUCLIDEAN ALGORITHM
+
+Extended Euclidean algorithm calculates greatest common divisor 
+and returns coefficients to arrive at it in O(log(min(M, N))). 
 """
 
 def euclidean(x: int, y: int) -> List[int]: 
@@ -112,32 +116,14 @@ def fibonacci(n):
 	return round(((1+sqrt(5))/2)**n/sqrt(5))
 
 
-def fibonacci(n: int) -> List[int]: 
+def fibonacci(n: int) -> Tuple[int]: 
 	"""
 	Return F(n) and F(n+1) as a pair via "fast doubling method". 
 	F(2*k) = F(k) * (2*F(k+1) - F(k))
 	F(2*k + 1) = F(k) * F(k) + F(k+1) * F(k+1)
 	"""
-	if n == 0: return [0, 1]
-	x, y = fibonacci(n >> 1)
-	xx = x * (2*y - x)
+	if n == 0: return (0, 1)
+	x, y = fibonacci(n//2)
+	xx = x*(2*y - x)
 	yy = x*x + y*y
-	return [yy, xx+yy] if n&1 else [xx, yy]
-
-
-def choose(n: int, k: int) -> int:
-	"""Return binomial coefficient of n choose k."""
-	ans = 1
-	for i in range(min(k, n-k)):
-		ans *= n-i
-		ans //= i+1
-	return ans 
-
-
-def catalan(n: int) -> int: 
-	"""Return nth Catalan number."""
-	ans = 1
-	for i in range(n): 
-		ans *= 2*n - i
-		ans //= i+1
-	return ans//(n+1)
+	return (yy, xx+yy) if n&1 else (xx, yy)
