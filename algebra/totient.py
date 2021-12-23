@@ -44,8 +44,9 @@ a^n ≡ a^(n mod ϕ(m)) (mod m) if a and m are coprime.
 """
 
 from math import sqrt 
+from typing import List
 
-def totient(n): 
+def totient(n: int) -> int: 
 	"""Return Euler's totient function ϕ(n)."""
 	ans = n 
 	for p in range(2, int(sqrt(n))+1): 
@@ -56,7 +57,7 @@ def totient(n):
 	return ans 
 
 
-def totient_upto(n): 
+def totient_upto(n: int) -> List[int]: 
 	"""Return all Euler's totient function values upto n in O(Nlog(logN))."""
 	ans = list(range(n+1))
 	for x in range(2, n+1): 
@@ -66,7 +67,7 @@ def totient_upto(n):
 	return ans 
 
 
-def totient_upto2(n): 
+def totient_upto2(n: int) -> List[int]: 
 	"""Return all Euler's totient function values upto n 
 	using "divisor sum property" in O(NlogN)."""
 	ans = [0, 1] + list(range(1, n))
