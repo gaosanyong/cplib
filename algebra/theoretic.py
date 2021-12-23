@@ -107,6 +107,13 @@ def num_of_divisors(n: int) -> int:
     return ans 
 
 
+"""
+SUM OF DIVISORS 
+If the prime factorization of n is p1^e1⋅p2^e2⋯pk^ek, where pi are distinct 
+prime numbers, then the sum of divisors is 
+σ(n)=(p1^(e1+1)−1)/(p1−1)⋅(p2^(e2+1)−1)/(p2−1)⋯(pk^(ek+1)−1)/(pk−1)
+"""
+
 def sum_of_divisors(n: int) -> int: 
     """Return sum of divisors of given number."""
     freq = Counter()
