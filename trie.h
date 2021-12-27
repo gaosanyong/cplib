@@ -1,16 +1,15 @@
 struct TrieNode {
-    TrieNode* child[26] = {nullptr};
+    TrieNode* children[26] = {nullptr};
     bool is_word = false;
     
-    ~TrieNode() {
-        for (auto& node : child) delete node; 
-    }
+    ~TrieNode() { for (auto& node : children) delete node; }
 };
 
 
 class Trie {
-    TrieNode* root; 
 public: 
+    TrieNode* root = nullptr; 
+
     Trie() { root = new TrieNode(); }
 
     ~Trie() { delete root; }
@@ -18,8 +17,8 @@ public:
     void insert(string word) {
         TrieNode* node = root; 
         for (auto& ch : word) {
-            if (!node->child[ch - 'a']) node->child[ch - 'a'] = new TrieNode(); 
-            node = node->child[ch - 'a'];
+            if (!node->children[ch-'a']) node->children[ch-'a'] = new TrieNode(); 
+            node = node->children[ch-'a'];
         }
         node->is_word = true; 
     }
@@ -27,7 +26,7 @@ public:
     bool prefix(string word) {
         TrieNode* node = root; 
         for (auto& ch : word) {
-            node = node->child[ch - 'a']; 
+            node = node->children[ch-'a']; 
             if (!node) return false; 
         }
         return true; 
