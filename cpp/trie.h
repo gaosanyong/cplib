@@ -1,10 +1,8 @@
 struct TrieNode {
     TrieNode* children[26] = {nullptr};
     bool is_word = false;
-    
     ~TrieNode() { for (auto& node : children) delete node; }
 };
-
 
 class Trie {
 public: 
@@ -40,4 +38,4 @@ public:
         }
         return node->is_word; 
     }
-}
+};

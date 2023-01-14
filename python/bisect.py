@@ -1,40 +1,40 @@
 """
 NAME
-	binary_search - binary search template 
+	bisect - binary search template 
 
 DESCRIPTION
 	This module implements the many version of binary search. 
 
-	* bisect             binary search the only true occurrence
-	* bisect_left        binary search the left-most occurrence
-	* bisect_rigth       binary search the right-most occurrence
-	* bisect_first_true  binary search the first true occurrence
-	* bisect_last_true   binary search the last true occurrence
+	* bisect             binary search for        any occurrence
+	* bisect_left        binary search for  left-most occurrence
+	* bisect_rigth       binary search for right-most occurrence
+	* bisect_first_true  binary search for first true occurrence
+	* bisect_last_true   binary search for  last true occurrence
 
 FUNCTIONS
 	bisect(arr, x)
-		Return the index of x if found or -1 if not. 
+		Return a location where the value is x.
 
 	bisect_left(arr, x)
-		Return the index where to insert x into arr. 
+		Return insertion point i for x so that all numbers to the right >= x.
 		The return value i is such that all e in arr[:i] have e < x, and all e 
 		in arr[i:] have e >= x. 
 
 	bisect_right(arr, x)
-		Return the index where to insert x into arr.
+		Return insertion point i for x so that all numbers to the right > x.
 		The return value i is such that all e in arr[:i] have e <= x, and all 
 		e in arr[i:] have e > x.
 
 	bisect_first_true(arr, x)
-		Return the first index where a predicate is evaluated to True.
+		Binary the first location where number is evaluated to true.
 
 	bisect_last_true(arr, x)
-		Return the last index where a predicate is evaluated to True.
+		Binary the last location where number is evaluated to true.
 """
 
 def bisect(arr, x):
-	"""Binary search the only true occurrence."""
-	lo, hi = 0, len(arr)-1 # left close & right close 
+	"""Return a location where the value is x."""
+	lo, hi = 0, len(arr)-1 
 	while lo <= hi: 
 		mid = lo + hi >> 1
 		if arr[mid] == x: return mid
@@ -44,7 +44,7 @@ def bisect(arr, x):
 
 
 def bisect_left(arr, x): 
-	"""Binary search array to find (left-most) x."""
+	"""Return insertion point i for x so that all numbers to the right >= x."""
 	lo, hi = 0, len(arr)
 	while lo < hi:
 		mid = lo + hi >> 1
@@ -54,7 +54,7 @@ def bisect_left(arr, x):
 
 
 def bisect_right(arr, x): 
-	"""Binary search array to find (right-most) x."""
+	"""Return insertion point i for x so that all numbers to the right > x."""
 	lo, hi = 0, len(arr)
 	while lo < hi: 
 		mid = lo + hi >> 1
@@ -64,7 +64,7 @@ def bisect_right(arr, x):
 
 
 def bisect_first_true(arr): 
-	"""Binary search for first True occurrence."""
+	"""Binary the first location where number is evaluated to true."""
 	lo, hi = 0, len(arr)
 	while lo < hi: 
 		mid = lo + hi >> 1
@@ -74,8 +74,8 @@ def bisect_first_true(arr):
 
 
 def bisect_last_true(arr): 
-	"""Binary search for last True occurrence."""
-	lo, hi = -1, len(arr)-1
+	"""Binary the last location where number is evaluated to true."""
+	lo, hi = -1, len(arr)-1 # last true at -1 for all false array
 	while lo < hi: 
 		mid = lo + hi + 1 >> 1
 		if arr[mid]: lo = mid 
