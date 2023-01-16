@@ -1,21 +1,20 @@
-template<class T>
 class Fenwick {
-    /*Fenwick tree with prefix sum query*/
-    vector<T> nums; 
+    /*Fenwick tree for prefix sum query*/
+    vector<int> nums; 
 public: 
     Fenwick(int n) {
         nums.resize(n+1); 
     }
-
-    void update(int k, T x) {
-        /*Add kth element with value x.*/
+    
+    /*Update tree upon adding delta to kth element.*/
+    void add(int k, int delta) {
         for (++k; k < nums.size(); k += k & -k) 
-            nums[k] += x; 
+            nums[k] += delta; 
     }
 
-    T query(int k) {
-        /*Return prefix sum of nums[0] ... nums[k] (inclusive).*/
-        T ans = 0; 
+    /*Return the prefix sum up to kth index (inclusive).*/
+    long query(int k) {
+        long ans = 0; 
         for (++k; k; k -= k & -k) 
             ans += nums[k]; 
         return ans; 

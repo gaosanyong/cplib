@@ -64,7 +64,7 @@ class Fenwick:
         k += 1
         while k:
             ans += self.nums[k]
-            k -= k & -k # unset last set bit 
+            k -= k & -k 
         return ans
 
 
