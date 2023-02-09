@@ -233,3 +233,9 @@ def prim():
     """Prim's algo
     Return the minimum spanning tree."""
     pass 
+
+
+"""
+Konig's Theorem
+The maximum mathcing for a bipartite graph equals its minimum vertex cover.
+"""

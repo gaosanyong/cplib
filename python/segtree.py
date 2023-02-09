@@ -40,24 +40,22 @@ class SegTree:
 
     def _build(self, arr: List[int], k: int, lo: int, hi: int) -> None: 
         """Build segment tree from array."""
-        if lo+1 == hi: 
-            self.tree[k] = arr[lo]
-            return 
-        mid = lo + hi >> 1
-        self._build(arr, 2*k+1, lo, mid)
-        self._build(arr, 2*k+2, mid, hi)
-        self.tree[k] = min(self.tree[2*k+1], self.tree[2*k+2])
+        if lo+1 == hi: self.tree[k] = arr[lo]
+        else: 
+            mid = lo + hi >> 1
+            self._build(arr, 2*k+1, lo, mid)
+            self._build(arr, 2*k+2, mid, hi)
+            self.tree[k] = min(self.tree[2*k+1], self.tree[2*k+2])
 
     def update(self, i: int, delta: int, k: int = 0, lo: int = 0, hi: int = 0) -> None:
         """Update segment tree when array value at i is incresed by delta."""
         if not hi: hi = self.n
-        if lo+1 == hi: # leaf node
-            self.tree[k] += delta
-            return 
-        mid = lo + hi >> 1
-        if i < mid: self.update(i, delta, 2*k+1, lo, mid) 
-        else: self.update(i, delta, 2*k+2, mid, hi)
-        self.tree[k] = min(self.tree[2*k+1], self.tree[2*k+2])
+        if lo+1 == hi: self.tree[k] += delta # leaf node
+        else: 
+            mid = lo + hi >> 1
+            if i < mid: self.update(i, delta, 2*k+1, lo, mid) 
+            else: self.update(i, delta, 2*k+2, mid, hi)
+            self.tree[k] = min(self.tree[2*k+1], self.tree[2*k+2])
 
     def query(self, qlo: int, qhi: int, k: int = 0, lo: int = 0, hi: int = 0) -> int: 
         """Query value from qlo (inclusive) and qhi (exclusive)."""
@@ -79,13 +77,12 @@ class SegTreeLazy:
 
     def _build(self, arr: List[int], k: int, lo: int, hi: int) -> None: 
         """Build segment tree from array."""
-        if lo+1 == hi: 
-            self.tree[k] = arr[lo]
-            return 
-        mid = lo + hi >> 1
-        self._build(arr, 2*k+1, lo, mid)
-        self._build(arr, 2*k+2, mid, hi)
-        self.tree[k] = min(self.tree[2*k+1], self.tree[2*k+2]) 
+        if lo+1 == hi: self.tree[k] = arr[lo]
+        else: 
+            mid = lo + hi >> 1
+            self._build(arr, 2*k+1, lo, mid)
+            self._build(arr, 2*k+2, mid, hi)
+            self.tree[k] = min(self.tree[2*k+1], self.tree[2*k+2]) 
 
     def update(self, qlo: int, qhi: int, delta: int, k: int = 0, lo: int = 0, hi: int = 0) -> None:
         """Update segment tree when value in [qlo, qhi) is incresed by delta."""
@@ -96,16 +93,17 @@ class SegTreeLazy:
                 self.lazy[2*k+1] += self.lazy[k] # mark children for lazy propagation
                 self.lazy[2*k+2] += self.lazy[k] # mark children for lazy propagation
             self.lazy[k] = 0
-        if qlo <= lo and hi <= qhi: # total overlap
-            self.tree[k] += delta
-            if lo+1 < hi: 
-                self.lazy[2*k+1] += delta 
-                self.lazy[2*k+2] += delta 
-            return 
-        mid = lo + hi >> 1
-        self.update(qlo, qhi, delta, 2*k+1, lo, mid) 
-        self.update(qlo, qhi, delta, 2*k+2, mid, hi)
-        self.tree[k] = min(self.tree[2*k+1], self.tree[2*k+2])
+        if lo < hi and qlo < hi and lo < qhi: 
+            if qlo <= lo and hi <= qhi: # total overlap
+                self.tree[k] += delta
+                if lo+1 < hi: 
+                    self.lazy[2*k+1] += delta 
+                    self.lazy[2*k+2] += delta 
+            else: 
+                mid = lo + hi >> 1
+                self.update(qlo, qhi, delta, 2*k+1, lo, mid) 
+                self.update(qlo, qhi, delta, 2*k+2, mid, hi)
+                self.tree[k] = min(self.tree[2*k+1], self.tree[2*k+2])
 
     def query(self, qlo: int, qhi: int, k: int = 0, lo: int = 0, hi: int = 0) -> int: 
         """Query value from qlo (inclusive) and qhi (exclusive)."""
@@ -120,7 +118,6 @@ class SegTreeLazy:
         if qlo <= lo and hi <= qhi: return self.tree[k] #   total overlap 
         mid = lo + hi >> 1                              # partial overlap 
         return min(self.query(qlo, qhi, 2*k+1, lo, mid), self.query(qlo, qhi, 2*k+2, mid, hi))
-
 
 
 class SegTreeIter: 
@@ -161,7 +158,6 @@ class SegTreeIter:
         while i > 1: 
             self.tree[i>>1] = self.tree[i] + self.tree[i^1]
             i >>= 1
-
 
 
 class SegTreeIterLazy: 
