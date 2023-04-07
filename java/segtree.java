@@ -20,8 +20,11 @@ class SegTree {
         build(arr, 0, 0, n); 
     }
 
-    public void update(int i, int val, int k = 0, int lo = 0, int hi = 0) {
-        if (hi == 0) hi = n; 
+    public void update(int i, int val) {
+        update(i, val, 0, 0, n); 
+    }
+
+    private void update(int i, int val, int k, int lo, int hi) {
         if (lo+1 == hi) tree[k] = val; 
         else {
             int mid = lo + (hi-lo)/2; 
@@ -31,8 +34,11 @@ class SegTree {
         }
     }
 
-    public int query(int qlo, int qhi, int k = 0, int lo = 0, int hi = 0) {
-        if (hi == 0) hi = n; 
+    public int query(int qlo, int qhi) {
+        return query(qlo, qhi, 0, 0, n); 
+    }
+
+    private int query(int qlo, int qhi, int k = 0, int lo = 0, int hi = 0) {
         if (qhi <= lo || hi <= qlo) return Integer.MAX_VALUE; 
         if (qlo <= lo && hi <= qhi) return tree[k]; 
         int mid = lo + (hi-lo)/2; 
