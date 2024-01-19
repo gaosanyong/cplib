@@ -52,21 +52,18 @@ def kmp(pattern, text):
 def kmp_all(pattern, text):
     """Knuth-Moore-Pratt algo
     Return locations of all occurrences of pattern in text."""
-    ans = []
-    lps = [0] # longest proper prefix also suffix 
     k = 0
+    lps = [0] # longest proper prefix also suffix
     for i in range(1, len(pattern)):
         while k and pattern[k] != pattern[i]: k = lps[k-1]
         if pattern[k] == pattern[i]: k += 1
         lps.append(k)
     k = 0
+    ans = []
     for i, ch in enumerate(text): 
-        while k and pattern[k] != ch: k = lps[k-1]
+        while k and (k == len(pattern) or pattern[k] != ch): k = lps[k-1]
         if pattern[k] == ch: k += 1
-        if k == len(pattern): 
-            ans.append(i-len(pattern)+1)
-            k = lps[k-1]
-            while k and pattern[k] != ch: k = lps[k-1]
+        if k == len(pattern): ans.append(i-len(pattern)+1)
     return []
 
 
