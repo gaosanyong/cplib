@@ -2,7 +2,7 @@
 efficiently update values and calculate prefix sums in an array of values.*/
 
 class Fenwick {
-    private nums: Array<number>; 
+    private nums: number[];
     
     constructor(n) {
         this.nums = Array(n+1).fill(0); 
