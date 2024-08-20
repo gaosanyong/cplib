@@ -38,7 +38,7 @@ class SegTree {
         return query(qlo, qhi, 0, 0, n); 
     }
 
-    private int query(int qlo, int qhi, int k = 0, int lo = 0, int hi = 0) {
+    private int query(int qlo, int qhi, int k, int lo, int hi) {
         if (qhi <= lo || hi <= qlo) return Integer.MAX_VALUE; 
         if (qlo <= lo && hi <= qhi) return tree[k]; 
         int mid = lo + (hi-lo)/2; 
