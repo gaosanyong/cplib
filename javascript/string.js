@@ -13,3 +13,21 @@ function kmp_all(pattern, text) {
     }
     return ans;
 }
+
+
+function z_algo(s) {
+    const n = s.length;
+    const ans = Array(n).fill(0);
+    for (let i = 1, ii = 0, lo = 0, hi = 0; i < n; ++i) {
+        if (i <= hi) ii = i - lo;
+        if (i + ans[ii] <= hi) ans[i]= ans[ii];
+        else {
+            lo = i;
+            hi = Math.max(hi, i);
+            while (hi < n && s[hi] === s[hi-lo]) ++hi;
+            ans[i] = hi - lo;
+            --hi;
+        }
+    }
+    return ans;
+}

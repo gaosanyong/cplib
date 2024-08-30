@@ -13,3 +13,21 @@ vector<int> kmp_all(string pattern, string text) {
     }
     return ans;
 };
+
+
+vector<int> z_algo(string s) {
+    int n = s.size();
+    vector<int> ans(n);
+    for (int i = 0, ii = 0, lo = 0, hi = 0; i < n; ++i) {
+        if (i <= hi) ii = i - lo;
+        if (i+ans[ii] <= hi) ans[i] = ans[ii];
+        else {
+            lo = i;
+            hi = max(hi, i);
+            while (hi < n && s[hi] == s[hi-lo]) ++hi;
+            ans[i] = hi - lo;
+            --hi;
+        }
+    }
+    return ans;
+}
