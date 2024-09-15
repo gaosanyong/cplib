@@ -5,6 +5,7 @@ NAME
 DESCRIPTION
     This module implements string-relatd algorithms.
 
+    * AhoCorasick  string matching via Aho-Corasick algo
     * kmp          string matching via Knuth-Moore-Pratt algo
     * boyer_moore  string matching via Boyer-Moore algo
     * rabin_karp   string matching via Rabin-Karp algo
@@ -12,10 +13,16 @@ DESCRIPTION
     * z_algo       length of substrings also prefixes via Z algo
 
 FUNCTIONS
-    
+
+    AhoCorasick
+        build(patterns)
+            Build Aho-Corasick automata with patterns.
+        match(text)
+            Return locations of matchings in text.
+
     kmp(pattern, text)
         Return location of 1st occurrence of pattern in text.
-        
+
     kmp_all(pattern, text)
         Return locations of all occurrences of pattern in text.
 
@@ -31,6 +38,50 @@ FUNCTIONS
     z_algo(s)
         Return lengths of substrings that are also prefix strings.
 """
+
+from collections import defaultdict, deque
+from typing import List
+
+class AhoCorasick:
+    def __init__(self):
+        self.root = {"output" : None, "parent" : None, "suffix" : None}
+
+    def build(self, patterns: List[str]):
+        for pattern in patterns:
+            node = self.root
+            for ch in pattern:
+                if ch not in node: node[ch] = {"output" : None, "parent" : node, "suffix" : None}
+                node = node[ch]
+            node["$"] = pattern
+        parent = None
+        queue = deque([self.root])
+        while queue:
+            for _ in range(len(queue)):
+                node = queue.popleft()
+                for ch, child in node.items():
+                    if ch not in ("parent", "output", "suffix", "$"):
+                        suffix = node["suffix"]
+                        while suffix and ch not in suffix: suffix = suffix["suffix"]
+                        if suffix:
+                            child["suffix"] = suffix[ch]
+                            if "$" in child["suffix"]: child["output"] = child["suffix"]
+                            else: child["output"] = child["suffix"]["output"]
+                        else:
+                            child["output"] = None
+                            child["suffix"] = self.root
+                        queue.append(child)
+
+    def match(self, text: str):
+        ans = defaultdict(list)
+        node = self.root
+        for i, ch in enumerate(text):
+            while ch not in node and node["suffix"]: node = node["suffix"]
+            if ch in node: node = node[ch]
+            if "$" in node:
+                pattern = node["$"]
+                ans[pattern].append(i-len(pattern)+1)
+        return ans
+
 
 def kmp(pattern, text):
     """Knuth-Moore-Pratt algo
