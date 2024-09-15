@@ -1,14 +1,32 @@
 class StringUtils {
-    public static List<Integer> kmp_all(String pattern, String text) {
+    public static int kmp(String pattern, String text) {
+        int n = pattern.length();
         List<Integer> lps = new ArrayList<>();
         lps.add(0);
-        for (int i = 1, k = 0, n = pattern.length(); i < n; ++i) {
+        for (int i = 1, k = 0; i < n; ++i) {
             while (k > 0 && pattern.charAt(k) != pattern.charAt(i)) k = lps.get(k-1);
-            if (pattern.charAt(k) == pattern.charAt(i))++k;
+            if (pattern.charAt(k) == pattern.charAt(i)) ++k;
+            lps.add(k);
+        }
+        for (int i = 0, k = 0; i < text.length(); ++i) {
+            while (k > 0 && pattern.charAt(k) != pattern.charAt(i)) k = lps.get(k-1);
+            if (pattern.charAt(k) == text.charAt(i)) ++k;
+            if (k == n) return i-n+1;
+        }
+        return -1;
+    }
+
+    public static List<Integer> kmp_all(String pattern, String text) {
+        int n = pattern.length();
+        List<Integer> lps = new ArrayList<>();
+        lps.add(0);
+        for (int i = 1, k = 0; i < n; ++i) {
+            while (k > 0 && pattern.charAt(k) != pattern.charAt(i)) k = lps.get(k-1);
+            if (pattern.charAt(k) == pattern.charAt(i)) ++k;
             lps.add(k);
         }
         List<Integer> ans = new ArrayList();
-        for (int i = 0, k = 0, n = pattern.length(); i < text.length(); ++i) {
+        for (int i = 0, k = 0; i < text.length(); ++i) {
             while (k > 0 && (k == n || pattern.charAt(k) != text.charAt(i))) k = lps.get(k-1);
             if (pattern.charAt(k) == text.charAt(i)) ++k;
             if (k == n) ans.add(i-n+1);
