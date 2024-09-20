@@ -34,6 +34,30 @@ class StringUtils {
         return ans;
     }
 
+    public static String manacher(String s) {
+        StringBuilder sb = new StringBuilder("#");
+        for (var ch : s.toCharArray()) {
+            sb.append(ch);
+            sb.append('#');
+        }
+        String ss = sb.toString();
+        int n = ss.length(), center = 0, right = 0;
+        int[] hlen = new int[n];
+        for (int i = 0; i < n; ++i) {
+            if (i < right) hlen[i] = Math.min(right-i, hlen[2*center-i]);
+            while (0 <= i-1-hlen[i] && i+1+hlen[i] < n && ss.charAt(i-1-hlen[i]) == ss.charAt(i+1+hlen[i])) ++hlen[i];
+            if (right < i+hlen[i]) {
+                center = i;
+                right = i+hlen[i];
+            }
+        }
+        int ii = 0;
+        for (int i = 0; i < n; ++i)
+            if (hlen[ii] < hlen[i])
+                ii = i;
+        return s.substring((i-hlen[i])/2, (i+hlen[i])/2);
+    }
+
     public static int[] z_algo(String s) {
         int n = s.length();
         int[] ans = new int[n];

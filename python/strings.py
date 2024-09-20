@@ -164,7 +164,7 @@ def manacher(s: str) -> str:
     center = right = 0
     for i in range(n):
         if i < right: hlen[i] = min(right-i, hlen[2*center-i])
-        while 0 <= i-1-hlen[i] and i+1+hlen[i] < len(ss) and ss[i-1-hlen[i]] == ss[i+1+hlen[i]]: hlen[i] += 1
+        while 0 <= i-1-hlen[i] and i+1+hlen[i] < n and ss[i-1-hlen[i]] == ss[i+1+hlen[i]]: hlen[i] += 1
         if right < i+hlen[i]: center, right = i, i+hlen[i]
     xx, ii = max((x, i) for i, x in enumerate(hlen))
     return s[(ii-xx)//2 : (ii+xx)//2]
