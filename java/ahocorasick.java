@@ -20,7 +20,7 @@ class TrieNode {
 public class AhoCorasick {
     public TrieNode root = new TrieNode();
 
-    public void build(List<String> patterns) {
+    public void build(String[] patterns) {
         for (var pattern : patterns) {
             TrieNode node = root;
             for (var ch : pattern.toCharArray()) {
@@ -65,12 +65,13 @@ public class AhoCorasick {
             while (node.child[c] == null && node.suffix != null)
                 node = node.suffix;
             if (node.child[c] != null) node = node.child[c];
-            if (node.word != null) {
-                String pattern = node.word;
-                if (!ans.containsKey(pattern))
-                    ans.put(pattern, new ArrayList<>());
-                ans.get(pattern).add(i-pattern.length()+1);
-            }
+            for (TrieNode output = node; output != null; output = output.output)
+                if (output.word != null) {
+                    String pattern = output.word;
+                    if (!ans.containsKey(pattern))
+                        ans.put(pattern, new ArrayList<>());
+                    ans.get(pattern).add(i-pattern.length()+1);
+                }
         }
         return ans;
     }

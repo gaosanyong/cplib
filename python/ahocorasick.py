@@ -35,9 +35,12 @@ class AhoCorasick:
         for i, ch in enumerate(text):
             while ch not in node and node["suffix"]: node = node["suffix"]
             if ch in node: node = node[ch]
-            if "$" in node:
-                pattern = node["$"]
-                ans[pattern].append(i-len(pattern)+1)
+            output = node
+            while output:
+                if "$" in output:
+                    pattern = output["$"]
+                    ans[pattern].append(i-len(pattern)+1)
+                output = output["output"]
         return ans
 
 

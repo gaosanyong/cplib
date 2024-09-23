@@ -62,11 +62,12 @@ class AhoCorasick {
         for (const [i, ch] of text.split('').entries()) {
             while (!(ch in node.child) && node.suffix) node = node.suffix;
             if (ch in node.child) node = node.child[ch];
-            if (node.word) {
-                const pattern = node.word;
-                if (!(pattern in ans)) ans[pattern] = [];
-                ans[pattern].push(i-pattern.length+1);
-            }
+            for (let output = node; output; output = output.output)
+                if (output.word) {
+                    const pattern = output.word;
+                    if (!(pattern in ans)) ans[pattern] = [];
+                    ans[pattern].push(i-pattern.length+1);
+                }
         }
         return ans;
     }

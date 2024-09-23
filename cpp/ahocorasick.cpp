@@ -68,10 +68,11 @@ public:
             int c = ch - 'a';
             while (!node->child[c] && node->suffix) node = node->suffix;
             if (node->child[c]) node = node->child[c];
-            if (!node->word.empty()) {
-                string pattern = node->word;
-                ans[pattern].push_back(i-pattern.size()+1);
-            }
+            for (TrieNode *output = node; output; output = output->output)
+                if (!output->word.empty()) {
+                    string pattern = output->word;
+                    ans[pattern].push_back(i-pattern.size()+1);
+                }
         }
         return ans;
     }
