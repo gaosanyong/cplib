@@ -1,8 +1,8 @@
-class TreeNode {
+class AVLTreeNode {
     public key: number;
     public value: number;
-    public left: TreeNode | null;
-    public right: TreeNode | null;
+    public left: AVLTreeNode | null;
+    public right: AVLTreeNode | null;
     public height: number;
 
     constructor(key, value, left=null, right=null, height=1) {
@@ -26,12 +26,12 @@ class TreeNode {
  * @public
  */
 class AVLTree {
-    public root: TreeNode | null;
+    public root: AVLTreeNode | null;
     public size: number;
 
     constructor() {
         /**
-         * @property {TreeNode} root - root of AVL tree.
+         * @property {AVLTreeNode} root - root of AVL tree.
          * @property {number} size - size of AVL tree.
          */
         this.root = null;
@@ -39,7 +39,7 @@ class AVLTree {
     }
 
     /**
-     * @param {TreeNode} node - the subtree whose balance is to be calculated.
+     * @param {AVLTreeNode} node - the subtree whose balance is to be calculated.
      * @returns balance of the subtree rooted at node.
      */
     balance(node) {
@@ -49,7 +49,7 @@ class AVLTree {
 
     /**
      * @param {number} key - the key those ceiling is to be found.
-     * @returns the TreeNode with the least key greater than or equal to the
+     * @returns the AVLTreeNode with the least key greater than or equal to the
      *          given key (null if no such key).
      */
     ceilingEntry(key) {
@@ -61,6 +61,16 @@ class AVLTree {
                 node = node.left;
             }
         return ans;
+    }
+
+    /**
+     * @param {number} key - the key those ceiling is to be found.
+     * @returns the least key greater than or equal to the given key (null if no
+     *          such key).
+     */
+    ceilingKey(key) {
+        const ans = this.ceilingEntry(key);
+        return ans === null ? null : ans.key;
     }
 
     /**
@@ -79,7 +89,7 @@ class AVLTree {
 
     /**
      * @param {number} key - the key whose floor is to be found.
-     * @returns the TreeNode with the greatest key less than or equal to the
+     * @returns the AVLTreeNode with the greatest key less than or equal to the
      *          given key (null if no such key).
      */
     floorEntry(key) {
@@ -94,6 +104,16 @@ class AVLTree {
     }
 
     /**
+     * @param {number} key - the key whose floor is to be found.
+     * @returns the greatest key less than or equal to the given key (null if no
+     *          such key).
+     */
+    floorKey(key) {
+        const ans = this.floorEntry(key);
+        return ans === null ? null : ans.key;
+    }
+
+    /**
      * @param {number} key - the key to which the value is to be found.
      * @returns the value to which the specified key is mapped, or null if this
      *          tree contains no mapping for the key.
@@ -103,7 +123,7 @@ class AVLTree {
     }
 
     /**
-     * @param {number} node - the TreeNode whose height is of interest.
+     * @param {number} node - the AVLTreeNode whose height is of interest.
      * @returns the height of the subtree rooted at given node.
      */
     height(node) {
@@ -147,7 +167,7 @@ class AVLTree {
 
     /**
      * @private
-     * @param {TreeNode} node - the subtree where the search happens.
+     * @param {AVLTreeNode} node - the subtree where the search happens.
      * @param {number} key - the key to which the value is to be found.
      * @returns the value to which the specified key is mapped, or null if this
      *          subtree contains no mapping for the key.
@@ -161,7 +181,7 @@ class AVLTree {
 
     /**
      * @private
-     * @param {TreeNode} node - the tree node for left rotation.
+     * @param {AVLTreeNode} node - the tree node for left rotation.
      * @returns the tree node after left rotation.
      */
     #left_rotate(node) {
@@ -175,7 +195,7 @@ class AVLTree {
 
     /**
      * @private
-     * @param {TreeNode} node - the subtree to which the key-value pair is to be inserted.
+     * @param {AVLTreeNode} node - the subtree to which the key-value pair is to be inserted.
      * @param {number} key - the key to be inserted.
      * @param {number} value - the value to be inserted.
      * @returns the tree node after the key-value pair is inserted into the subtree.
@@ -183,7 +203,7 @@ class AVLTree {
     #put(node, key, value) {
         if (!node) {
             ++this.size;
-            return new TreeNode(key, value);
+            return new AVLTreeNode(key, value);
         } else if (key < node.key) node.left = this.#put(node.left, key, value);
         else if (key > node.key) node.right = this.#put(node.right, key, value);
         else {
@@ -209,7 +229,7 @@ class AVLTree {
 
     /**
      * @private
-     * @param {TreeNode} node - the subtree to remove the key.
+     * @param {AVLTreeNode} node - the subtree to remove the key.
      * @param {number} key - the key to be removed from the subtree.
      * @return tree node after given key is removed.
      */
@@ -255,7 +275,7 @@ class AVLTree {
 
     /**
      * @private
-     * @param {TreeNode} node - the tree node for right rotation.
+     * @param {AVLTreeNode} node - the tree node for right rotation.
      * @returns the tree node after right rotation.
      */
     #right_rotate(node) {
