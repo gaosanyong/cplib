@@ -56,6 +56,16 @@ class AVLTree {
     }
 
     /**
+     * @param {number} key - the key those ceiling is to be found.
+     * @returns the least key greater than or equal to the given key (null if no
+     *          such key).
+     */
+    ceilingKey(key) {
+        let ans = this.ceilingEntry(key);
+        return ans === null ? null : ans.key;
+    }
+
+    /**
      * @returns an array of key-value pairs in the tree.
      */
     entrySet() {
@@ -83,6 +93,16 @@ class AVLTree {
                 node = node.right;
             }
         return ans;
+    }
+
+    /**
+     * @param {number} key - the key whose floor is to be found.
+     * @returns the greatest key less than or equal to the given key (null if no
+     *          such key).
+     */
+    floorKey(key) {
+        const ans = this.floorEntry(key);
+        return ans === null ? null : ans.key;
     }
 
     /**
