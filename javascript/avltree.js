@@ -80,6 +80,14 @@ class AVLTree {
     }
 
     /**
+     * @returns the least key (null if empty).
+     */
+    firstKey() {
+        const node = this.#firstEntry(this.root)
+        return node ? node.key : null;
+    }
+
+    /**
      * @param {number} key - the key whose floor is to be found.
      * @returns the TreeNode with the greatest key less than or equal to the
      *          given key (null if no such key).
@@ -120,6 +128,21 @@ class AVLTree {
      */
     height(node) {
         return node ? node.height : 0;
+    }
+
+    /**
+     * @returns the node associated with the largest key (null if empty).
+     */
+    lastEntry() {
+        return this.#lastEntry(this.root);
+    }
+
+    /**
+     * @returns the largest key (null if empty).
+     */
+    lastKey() {
+        const node = this.#lastEntry(this.root);
+        return node ? node.key : null;
     }
 
     /**
@@ -173,10 +196,19 @@ class AVLTree {
 
     /**
      * @private
+     * @returns the subtree node associated with the largest key (null if empty).
+     */
+    #lastEntry(node) {
+        while (node && node.right) node = node.right;
+        return node;
+    }
+
+    /**
+     * @private
      * @param {TreeNode} node - the tree node for left rotation.
      * @returns the tree node after left rotation.
      */
-    #left_rotate(node) {
+    #leftRotate(node) {
         let y = node.right, T2 = y.left;
         y.left = node;
         node.right = T2;
@@ -205,16 +237,16 @@ class AVLTree {
         node.height = 1 + Math.max(this.height(node.left), this.height(node.right));
         let bal = this.balance(node);
         if (bal > 1 && key < node.left.key)
-            return this.#right_rotate(node);
+            return this.#rightRotate(node);
         if (bal < -1 && key > node.right.key)
-            return this.#left_rotate(node);
+            return this.#leftRotate(node);
         if (bal > 1 && key > node.left.key) {
-            node.left = this.#left_rotate(node.left);
-            return this.#right_rotate(node);
+            node.left = this.#leftRotate(node.left);
+            return this.#rightRotate(node);
         }
         if (bal < -1 && key < node.right.key) {
-            node.right = this.#right_rotate(node.right);
-            return this.#left_rotate(node);
+            node.right = this.#rightRotate(node.right);
+            return this.#leftRotate(node);
         }
         return node;
     }
@@ -251,16 +283,16 @@ class AVLTree {
         node.height = 1 + Math.max(this.height(node.left), this.height(node.right));
         let bal = this.balance(node);
         if (bal > 1 && this.balance(node.left) > 0)
-            return this.#right_rotate(node);
+            return this.#rightRotate(node);
         if (bal < -1 && this.balance(node.right) < 0)
-            return this.#left_rotate(node);
+            return this.#leftRotate(node);
         if (bal > 1 && this.balance(node.left) < 0) {
-            node.left = this.#left_rotate(node.left);
-            return this.#right_rotate(node);
+            node.left = this.#leftRotate(node.left);
+            return this.#rightRotate(node);
         }
         if (bal < -1 && this.balance(node.right) > 0) {
-            node.right = this.#right_rotate(node.right);
-            return this.#left_rotate(node);
+            node.right = this.#rightRotate(node.right);
+            return this.#leftRotate(node);
         }
         return node;
     }
@@ -270,7 +302,7 @@ class AVLTree {
      * @param {TreeNode} node - the tree node for right rotation.
      * @returns the tree node after right rotation.
      */
-    #right_rotate(node) {
+    #rightRotate(node) {
         let y = node.left, T3 = y.right;
         y.right = node;
         node.left = T3;
