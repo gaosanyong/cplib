@@ -1,4 +1,4 @@
-class TreeNode {
+class AVLTreeNode {
     constructor(key, value, left=null, right=null, height=1) {
         this.key = key;
         this.value = value;
@@ -7,7 +7,6 @@ class TreeNode {
         this.height = height;
     }
 }
-
 
 /**
  * The AVL tree, named after its inventors Georgy Adelson-Velsky and Evgenii
@@ -21,17 +20,18 @@ class TreeNode {
  */
 class AVLTree {
 
-    constructor() {
+    constructor(obj) {
         /**
-         * @property {TreeNode} root - root of AVL tree.
+         * @property {AVLTreeNode} root - root of AVL tree.
          * @property {number} size - size of AVL tree.
          */
+        this.compare = obj.compare;
         this.root = null;
         this.size = 0;
     }
 
     /**
-     * @param {TreeNode} node - the subtree whose balance is to be calculated.
+     * @param {AVLTreeNode} node - the subtree whose balance is to be calculated.
      * @returns balance of the subtree rooted at node.
      */
     balance(node) {
@@ -41,61 +41,37 @@ class AVLTree {
 
     /**
      * @param {number} key - the key those ceiling is to be found.
-     * @returns the TreeNode with the least key greater than or equal to the
+     * @returns the AVLTreeNode with the least key greater than or equal to the
      *          given key (null if no such key).
      */
-    ceilingEntry(key) {
+    ceiling(key) {
         let ans = null;
         for (let node = this.root; node; )
-            if (node.key < key) node = node.right;
-            else {
+            if (this.compare(key, node.key) <= 0) {
                 ans = node;
                 node = node.left;
-            }
+            } else node = node.right;
         return ans;
     }
 
     /**
-     * @param {number} key - the key those ceiling is to be found.
-     * @returns the least key greater than or equal to the given key (null if no
-     *          such key).
+     * Deletes the mapping for this key from this tree if present.
+     * @param {number} key - the key to be deleted from the tree.
+     * @returns void
      */
-    ceilingKey(key) {
-        let ans = this.ceilingEntry(key);
-        return ans === null ? null : ans.key;
-    }
-
-    /**
-     * @returns an array of key-value pairs in the tree.
-     */
-    entrySet() {
-        return this.#traverse().map(x => [x.key, x.value]);
-    }
-
-    /**
-     * @returns the node associated with the least key (null if empty).
-     */
-    firstEntry() {
-        return this.#firstEntry(this.root);
-    }
-
-    /**
-     * @returns the least key (null if empty).
-     */
-    firstKey() {
-        const node = this.#firstEntry(this.root)
-        return node ? node.key : null;
+    delete(key) {
+        this.root = this.#delete(this.root, key);
     }
 
     /**
      * @param {number} key - the key whose floor is to be found.
-     * @returns the TreeNode with the greatest key less than or equal to the
+     * @returns the AVLTreeNode with the greatest key less than or equal to the
      *          given key (null if no such key).
      */
-    floorEntry(key) {
+    floor(key) {
         let ans = null;
         for (let node = this.root; node; )
-            if (key < node.key) node = node.left;
+            if (this.compare(key, node.key) < 0) node = node.left;
             else {
                 ans = node;
                 node = node.right;
@@ -104,26 +80,7 @@ class AVLTree {
     }
 
     /**
-     * @param {number} key - the key whose floor is to be found.
-     * @returns the greatest key less than or equal to the given key (null if no
-     *          such key).
-     */
-    floorKey(key) {
-        const ans = this.floorEntry(key);
-        return ans === null ? null : ans.key;
-    }
-
-    /**
-     * @param {number} key - the key to which the value is to be found.
-     * @returns the value to which the specified key is mapped, or null if this
-     *          tree contains no mapping for the key.
-     */
-    get(key) {
-        return this.#get(this.root, key);
-    }
-
-    /**
-     * @param {number} node - the TreeNode whose height is of interest.
+     * @param {number} node - the AVLTreeNode whose height is of interest.
      * @returns the height of the subtree rooted at given node.
      */
     height(node) {
@@ -131,37 +88,45 @@ class AVLTree {
     }
 
     /**
-     * @returns the node associated with the largest key (null if empty).
-     */
-    lastEntry() {
-        return this.#lastEntry(this.root);
-    }
-
-    /**
-     * @returns the largest key (null if empty).
-     */
-    lastKey() {
-        const node = this.#lastEntry(this.root);
-        return node ? node.key : null;
-    }
-
-    /**
      * Associates the specified value with the specified key in this tree.
-     * @param {number} key - the key to be put to the tree.
-     * @param {number} value - the value to be put to the tree.
+     * @param {number} key - the key to be inserted to the tree.
+     * @param {number} value - the value to be inserted to the tree.
      * @returns void
      */
-    put(key, value=0) {
-        this.root = this.#put(this.root, key, value);
+    insert(key, value=0) {
+        this.root = this.#insert(this.root, key, value);
     }
 
     /**
-     * Removes the mapping for this key from this tree if present.
-     * @param {number} key - the key to be removed from the tree.
-     * @returns void
+     * @param {AVLTreeNode} node - the node to start the search.
+     * @returns the node associated with the maximum key (null if empty).
      */
-    remove(key) {
-        this.root = this.#remove(this.root, key);
+    maximum(node=this.root) {
+        while (node && node.right) node = node.right;
+        return node;
+    }
+
+    /**
+     * @param {AVLTreeNode} node - the node to start the search.
+     * @returns the node associated with the minimum key (null if empty).
+     */
+    minimum(node=this.root) {
+        while (node && node.left) node = node.left;
+        return node;
+    }
+
+    /**
+     * @param {number} key - the key to which the value is to be found.
+     * @returns the value to which the specified key is mapped, or null if this
+     *          tree contains no mapping for the key.
+     */
+    search(key) {
+        let node = this.root;
+        while (node && node.key != key) {
+            if (this.compare(key, node.key) < 0) node = node.left;
+            else node = node.right;
+        }
+        return node;
     }
 
     /**
@@ -172,96 +137,22 @@ class AVLTree {
     }
 
     /**
-     * @private
-     * @returns the subtree node associated with the least key (null if empty).
+     * @returns an array of key-value pairs in the tree.
      */
-    #firstEntry(node) {
-        while (node && node.left) node = node.left;
-        return node;
+    traverse() {
+        return this.#traverse().map(x => [x.key, x.value]);
     }
 
     /**
      * @private
-     * @param {TreeNode} node - the subtree where the search happens.
-     * @param {number} key - the key to which the value is to be found.
-     * @returns the value to which the specified key is mapped, or null if this
-     *          subtree contains no mapping for the key.
+     * @param {AVLTreeNode} node - the subtree to delete the key.
+     * @param {number} key - the key to be deleted from the subtree.
+     * @return tree node after given key is deleted.
      */
-    #get(node, key) {
-        if (!node) return null;
-        if (node.key === key) return node.value;
-        if (node.key < key) return this.#get(node.right, key);
-        return this.#get(node.left, key);
-    }
-
-    /**
-     * @private
-     * @returns the subtree node associated with the largest key (null if empty).
-     */
-    #lastEntry(node) {
-        while (node && node.right) node = node.right;
-        return node;
-    }
-
-    /**
-     * @private
-     * @param {TreeNode} node - the tree node for left rotation.
-     * @returns the tree node after left rotation.
-     */
-    #leftRotate(node) {
-        let y = node.right, T2 = y.left;
-        y.left = node;
-        node.right = T2;
-        node.height = 1 + Math.max(this.height(node.left), this.height(node.right));
-        y.height = 1 + Math.max(this.height(y.left), this.height(y.right));
-        return y;
-    }
-
-    /**
-     * @private
-     * @param {TreeNode} node - the subtree to which the key-value pair is to be inserted.
-     * @param {number} key - the key to be inserted.
-     * @param {number} value - the value to be inserted.
-     * @returns the tree node after the key-value pair is inserted into the subtree.
-     */
-    #put(node, key, value) {
-        if (!node) {
-            ++this.size;
-            return new TreeNode(key, value);
-        } else if (key < node.key) node.left = this.#put(node.left, key, value);
-        else if (key > node.key) node.right = this.#put(node.right, key, value);
-        else {
-            node.value = value;
-            return node;
-        }
-        node.height = 1 + Math.max(this.height(node.left), this.height(node.right));
-        let bal = this.balance(node);
-        if (bal > 1 && key < node.left.key)
-            return this.#rightRotate(node);
-        if (bal < -1 && key > node.right.key)
-            return this.#leftRotate(node);
-        if (bal > 1 && key > node.left.key) {
-            node.left = this.#leftRotate(node.left);
-            return this.#rightRotate(node);
-        }
-        if (bal < -1 && key < node.right.key) {
-            node.right = this.#rightRotate(node.right);
-            return this.#leftRotate(node);
-        }
-        return node;
-    }
-
-    /**
-     * @private
-     * @param {TreeNode} node - the subtree to remove the key.
-     * @param {number} key - the key to be removed from the subtree.
-     * @return tree node after given key is removed.
-     */
-    #remove(node, key) {
+    #delete(node, key) {
         if (!node) return node;
-        if (key < node.key) node.left = this.#remove(node.left, key);
-        else if (key > node.key) node.right = this.#remove(node.right, key);
-        else {
+        if (this.compare(key, node.key) < 0) node.left = this.#delete(node.left, key);
+        else if (this.compare(key, node.key) === 0) {
             if (!node.left) {
                 let temp = node.right;
                 node = null;
@@ -274,11 +165,11 @@ class AVLTree {
                 --this.size;
                 return temp;
             }
-            let temp = this.#firstEntry(node.right);
+            let temp = this.minimum(node.right);
             node.key = temp.key;
             node.value = temp.value;
-            node.right = this.#remove(node.right, temp.key);
-        }
+            node.right = this.#delete(node.right, temp.key);
+        } else node.right = this.#delete(node.right, key);
         if (!node) return node;
         node.height = 1 + Math.max(this.height(node.left), this.height(node.right));
         let bal = this.balance(node);
@@ -299,7 +190,55 @@ class AVLTree {
 
     /**
      * @private
-     * @param {TreeNode} node - the tree node for right rotation.
+     * @param {AVLTreeNode} node - the subtree to which the key-value pair is to be inserted.
+     * @param {number} key - the key to be inserted.
+     * @param {number} value - the value to be inserted.
+     * @returns the tree node after the key-value pair is inserted into the subtree.
+     */
+    #insert(node, key, value) {
+        if (!node) {
+            ++this.size;
+            return new AVLTreeNode(key, value);
+        }
+        if (this.compare(key, node.key) < 0) node.left = this.#insert(node.left, key, value);
+        else if (this.compare(key, node.key) === 0) {
+            node.value = value;
+            return node;
+        } else node.right = this.#insert(node.right, key, value);
+        node.height = 1 + Math.max(this.height(node.left), this.height(node.right));
+        let bal = this.balance(node);
+        if (bal > 1 && this.compare(key, node.left.key) < 0)
+            return this.#rightRotate(node);
+        if (bal < -1 && this.compare(key, node.right.key) > 0)
+            return this.#leftRotate(node);
+        if (bal > 1 && this.compare(key, node.left.key) > 0) {
+            node.left = this.#leftRotate(node.left);
+            return this.#rightRotate(node);
+        }
+        if (bal < -1 && this.compare(key, node.right.key) < 0) {
+            node.right = this.#rightRotate(node.right);
+            return this.#leftRotate(node);
+        }
+        return node;
+    }
+
+    /**
+     * @private
+     * @param {AVLTreeNode} node - the tree node for left rotation.
+     * @returns the tree node after left rotation.
+     */
+    #leftRotate(node) {
+        let y = node.right, T2 = y.left;
+        y.left = node;
+        node.right = T2;
+        node.height = 1 + Math.max(this.height(node.left), this.height(node.right));
+        y.height = 1 + Math.max(this.height(y.left), this.height(y.right));
+        return y;
+    }
+
+    /**
+     * @private
+     * @param {AVLTreeNode} node - the tree node for right rotation.
      * @returns the tree node after right rotation.
      */
     #rightRotate(node) {
@@ -332,14 +271,14 @@ class AVLTree {
 }
 
 
-if (typeof require !== 'undefined' && require.main === module) {
+if (typeof require !== "undefined" && require.main === module) {
     const keys = [];
-    const tree = new AVLTree();
+    const tree = new AVLTree({ compare : (x, y) => x-y });
     for (let i = 0; i < 1000; ++i) {
-        const k = Math.floor(Math.random()*1000);
-        const v = Math.floor(Math.random()*1000);
+        const k = Math.floor(1000*Math.random());
+        const v = Math.floor(1000*Math.random());
         keys.push(k);
-        tree.put(k, v);
+        tree.insert(k, v);
     }
 
     function traverse(node) {
@@ -356,12 +295,12 @@ if (typeof require !== 'undefined' && require.main === module) {
     console.log("Tree size is ", tree.size);
     console.log("Tree height is:", tree.height(tree.root));
 
-    const result = tree.get(30);
+    const result = tree.search(30);
     if (result) console.log("Node found");
     else console.log("Node not found");
 
     for (const k of keys)
-        tree.remove(k);
+        tree.delete(k);
     console.log("Tree size is ", tree.size);
     console.log("Tree after deletion:");
     traverse(tree.root);
