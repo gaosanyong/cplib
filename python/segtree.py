@@ -66,13 +66,13 @@ class SegTree:
         return min(self.query(qlo, qhi, 2*k+1, lo, mid), self.query(qlo, qhi, 2*k+2, mid, hi))
 
 
-class SegTreeLazy: 
+class LazySegTreeMin:
     
     def __init__(self, arr: List[int]): 
         """Build the segmentation tree."""
         self.n = n = len(arr)
-        self.tree = [0]*(4*n)
         self.lazy = [0]*(4*n)
+        self.tree = [0]*(4*n)
         self._build(arr, 0, 0, n)
 
     def _build(self, arr: List[int], k: int, lo: int, hi: int) -> None: 
@@ -120,6 +120,60 @@ class SegTreeLazy:
         return min(self.query(qlo, qhi, 2*k+1, lo, mid), self.query(qlo, qhi, 2*k+2, mid, hi))
 
 
+class LazySegTreeSum:
+
+    def __init__(self, arr: List[int]):
+        """Build the segmentation tree."""
+        self.n = n = len(arr)
+        self.tree = [0]*(4*n)
+        self.lazy = [0]*(4*n)
+        self._build(arr, 0, 0, n)
+
+    def _build(self, arr: List[int], k: int, lo: int, hi: int) -> None:
+        """Build segment tree from array."""
+        if lo+1 == hi: self.tree[k] = arr[lo]
+        else:
+            mid = lo + hi >> 1
+            self._build(arr, 2*k+1, lo, mid)
+            self._build(arr, 2*k+2, mid, hi)
+            self.tree[k] = self.tree[2*k+1] + self.tree[2*k+2]
+
+    def update(self, qlo: int, qhi: int, delta: int, k: int = 0, lo: int = 0, hi: int = 0) -> None:
+        """Update segment tree when value in [qlo, qhi) is incresed by delta."""
+        if not hi: hi = self.n
+        if self.lazy[k]:
+            self.tree[k] += (hi-lo)*self.lazy[k]
+            if lo+1 < hi: # non-leaf
+                self.lazy[2*k+1] += self.lazy[k] # mark children for lazy propagation
+                self.lazy[2*k+2] += self.lazy[k] # mark children for lazy propagation
+            self.lazy[k] = 0
+        if lo < hi and qlo < hi and lo < qhi:
+            if qlo <= lo and hi <= qhi: # total overlap
+                self.tree[k] += (hi-lo)*delta
+                if lo+1 < hi:
+                    self.lazy[2*k+1] += delta
+                    self.lazy[2*k+2] += delta
+            else:
+                mid = lo + hi >> 1
+                self.update(qlo, qhi, delta, 2*k+1, lo, mid)
+                self.update(qlo, qhi, delta, 2*k+2, mid, hi)
+                self.tree[k] = self.tree[2*k+1] + self.tree[2*k+2]
+
+    def query(self, qlo: int, qhi: int, k: int = 0, lo: int = 0, hi: int = 0) -> int:
+        """Query value from qlo (inclusive) and qhi (exclusive)."""
+        if not hi: hi = self.n
+        if self.lazy[k]:
+            self.tree[k] += (hi-lo)*self.lazy[k]
+            if lo+1 < hi:
+                self.lazy[2*k+1] += self.lazy[k]
+                self.lazy[2*k+2] += self.lazy[k]
+            self.lazy[k] = 0
+        if qhi <= lo or  hi <= qlo: return 0            #      no overlap
+        if qlo <= lo and hi <= qhi: return self.tree[k] #   total overlap
+        mid = lo + hi >> 1                              # partial overlap
+        return self.query(qlo, qhi, 2*k+1, lo, mid) + self.query(qlo, qhi, 2*k+2, mid, hi)
+
+
 class SegTreeIter: 
     """Iterative implementation of segment tree
     Reference: https://codeforces.com/blog/entry/18051
@@ -160,7 +214,7 @@ class SegTreeIter:
             i >>= 1
 
 
-class SegTreeIterLazy: 
+class LazySegTreeIter:
 
     def __init__(self, arr: List[int]): 
         self.n = n = len(arr)
