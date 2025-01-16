@@ -118,7 +118,7 @@ def kmp_all(pattern, text):
         while k and (k == len(pattern) or pattern[k] != ch): k = lps[k-1]
         if pattern[k] == ch: k += 1
         if k == len(pattern): ans.append(i-len(pattern)+1)
-    return []
+    return ans
 
 
 def boyer_moore(pattern, text):
