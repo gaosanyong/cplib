@@ -8,6 +8,7 @@ DESCRIPTION
     * tpsort          return a topological sort via Kahn's algo
     * tpsort3         return a topological sort via tri-coloring
     * tarjan          return the bridges (critical edges) via Tarjan's algo
+    * tarjan_scc      return strongly connected components as low link
     * eulerian        check if Eulerian circuit/path exists
     * hierholzer      return a Eulerian circuit/path
     * dijkstra        return the shortest distance for a pair of nodes via Dijkstra's algo (all positive edges)
@@ -25,6 +26,9 @@ FUNCTIONS
 
     tarjan(grpah)
         Find bridges (critical edges) via Tarjan's algo.
+
+    tarjan_scc(graph)
+        Find strongly connected components of digraph.
 
     eulerian(graph)
         Check if an Eulerian path exists.
@@ -103,6 +107,36 @@ def tarjan(graph: List[List[int]]) -> List[List[int]]:
     
     dfs(0, -1, 0)
     return ans 
+
+
+def tarjan_scc(graph):
+    """Tarjan's algo
+    Return strongly connected components in a digraph as low link."""
+    ids = [-1] * len(graph)
+    low = [-1] * len(graph)
+    on = [False] * len(graph)
+    stack = []
+    k = 0
+
+    def dfs(u):
+        nonlocal k
+        stack.append(u)
+        on[u] = True
+        ids[u] = low[u] = k
+        k += 1
+        for v in graph[u]:
+            if ids[v] == -1: dfs(v)
+            if on[v]: low[u] = min(low[u], low[v])
+        if ids[u] == low[u]:
+            while True:
+                x = stack.pop()
+                on[x] = False
+                low[x] = ids[u]
+                if x == u: break
+
+    for u in range(len(graph)):
+        if ids[u] == -1: dfs(u)
+    return low
 
 """
 DEFINITIONS

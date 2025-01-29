@@ -1,3 +1,9 @@
+#include <sstream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
 int kmp(string pattern, string text) {
     vector<int> lps(1);
     for (int i = 1, k = 0, n = pattern.size(); i < n; ++i) {
@@ -50,7 +56,7 @@ string manacher(string s) {
     }
     int ii = 0;
     for (int i = 0; i < n; ++i)
-        if (hen[ii] < hlen[i])
+        if (hlen[ii] < hlen[i])
             ii = i;
     return s.substr((ii-hlen[ii])/2, hlen[ii]);
 }

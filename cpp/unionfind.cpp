@@ -1,3 +1,11 @@
+#include <algorithm>
+#include <numeric>
+#include <string>
+#include <unordered_map>
+#include <vector>
+
+using namespace std;
+
 class UnionFind {
     /*Union-Find implemented via array*/
 public: 

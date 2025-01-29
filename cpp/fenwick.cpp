@@ -1,3 +1,7 @@
+#include <vector>
+
+using namespace std;
+
 class Fenwick {
     /*Fenwick tree for prefix sum query*/
     vector<int> nums; 

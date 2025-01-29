@@ -1,3 +1,7 @@
+#include <vector>
+
+using namespace std;
+
 class SegTree {
     int n; 
     vector<int> tree; 

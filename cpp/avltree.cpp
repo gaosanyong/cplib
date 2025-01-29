@@ -1,5 +1,4 @@
 #include <algorithm>
-#include <cstddef>
 #include <cstdlib>
 #include <functional>
 #include <iostream>

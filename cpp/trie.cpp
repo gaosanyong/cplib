@@ -1,3 +1,7 @@
+#include <string>
+
+using namespace std;
+
 struct TrieNode {
     TrieNode* child[26] = {nullptr};
     string word;
