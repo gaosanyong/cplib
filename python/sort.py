@@ -54,7 +54,7 @@ def qksort(nums: List[int]) -> None:
         
     def sort(lo, hi): 
         """Sort nums[lo:hi] via quick sort."""
-        if lo + 1 == hi: return 
+        if lo + 1 >= hi: return
         i, j = lo+1, hi-1
         while i <= j: 
             if nums[i] < nums[lo]: i += 1
@@ -110,7 +110,7 @@ def qkselect(nums: List[int], k: int) -> int:
 
     lo, hi = 0, len(nums)
     while lo < hi: 
-        mid = part(nums, lo, hi)
+        mid = part(lo, hi)
         if mid < k-1: lo = mid + 1
         elif mid == k-1: return nums[mid]
         else: hi = mid
@@ -128,3 +128,38 @@ def part3(nums: List[int]) ->None:
         else: 
             nums[hi], nums[mid] = nums[mid], nums[hi]
             hi -= 1
+
+
+def qksort(nums: List[int], lo: int = 0, hi: int = -1) -> None:
+    """Sort an array in-place into ascending order via quick sort."""
+    if hi == -1: hi = len(nums)
+    if lo + 1 >= hi: return
+    i, j = lo+1, hi-1
+    while i <= j:
+        if nums[i] < nums[lo]: i += 1
+        elif nums[j] > nums[lo]: j -= 1
+        else:
+            nums[i], nums[j] = nums[j], nums[i]
+            i += 1
+            j -= 1
+    nums[lo], nums[j] = nums[j], nums[lo]
+    qksort(nums, lo, j)
+    qksort(nums, j+1, hi)
+
+
+def mgsort(nums: List[int], aux: List[int] = None, lo:int = 0, hi: int = -1) -> None:
+    """Sort an array in-place into ascending order via merge sort."""
+    if aux is None: aux = nums.copy()
+    if hi == -1: hi = len(nums)
+    if lo+1 >= hi: return
+    mid = lo + hi >> 1
+    mgsort(aux, nums, lo, mid)
+    mgsort(aux, nums, mid, hi)
+    i, j = lo, mid
+    for k in range(lo, hi):
+        if j >= hi or i < mid and aux[i] < aux[j]:
+            nums[k] = aux[i]
+            i += 1
+        else:
+            nums[k] = aux[j]
+            j += 1
