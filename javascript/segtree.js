@@ -9,9 +9,9 @@
 class SegTree {
     
     constructor(arr) {
-        this.n = n = arr.length;
-        this.tree = Array(4*n).fill(0);
-        this.#build(arr, 0, 0, n);
+        this.n = arr.length;
+        this.tree = Array(4*this.n).fill(0);
+        this.#build(arr, 0, 0, this.n);
     }
 
     /**
