@@ -37,7 +37,7 @@ class BalancedTree {
                 ans = node;
                 node = node.left;
             } else node = node.right;
-        return ans;
+        return ans !== this.nil ? ans.key : this.nil;
     }
 
     /**
@@ -53,7 +53,7 @@ class BalancedTree {
                 ans = node;
                 node = node.right;
             }
-        return ans;
+        return ans !== this.nil ? ans.key : this.nil;
     }
 
     /**
@@ -61,8 +61,8 @@ class BalancedTree {
      * @returns the node associated with the maximum key (null if empty).
      */
     maximum(node=this.root) {
-        while (node != this.nil && node.right !== this.nil) node = node.right;
-        return node;
+        while (node !== this.nil && node.right !== this.nil) node = node.right;
+        return node !== this.nil ? node.key : this.nil;
     }
 
     /**
@@ -70,8 +70,8 @@ class BalancedTree {
      * @returns the node associated with the minimum key (null if empty).
      */
     minimum(node=this.root) {
-        while (node != this.nul && node.left !== this.nil) node = node.left;
-        return node;
+        while (node !== this.nul && node.left !== this.nil) node = node.left;
+        return node !== this.nil ? node.key : this.nil;
     }
 
     /**
@@ -81,10 +81,10 @@ class BalancedTree {
      */
     search(key) {
         let node = this.root;
-        while (node != this.nil && this.compare(key, node.key) !== 0)
+        while (node !== this.nil && this.compare(key, node.key) !== 0)
             if (this.compare(key, node.key) < 0) node = node.left;
             else node = node.right;
-        return node;
+        return node !== this.nil ? node.value : this.nil;
     }
 
     /**
@@ -248,15 +248,15 @@ class AVLTree extends BalancedTree {
         } else node.right = this.#insert(node.right, key, value);
         node.height = 1 + Math.max(this.height(node.left), this.height(node.right));
         let bal = this.balance(node);
-        if (bal > 1 && this.compare(key, node.left.key) < 0)
+        if (bal > 1 && this.balance(node.left) > 0)
             return this.#rightRotate(node);
-        if (bal < -1 && this.compare(key, node.right.key) > 0)
+        if (bal < -1 && this.balance(node.right) < 0)
             return this.#leftRotate(node);
-        if (bal > 1 && this.compare(key, node.left.key) > 0) {
+        if (bal > 1 && this.balance(node.left) < 0) {
             node.left = this.#leftRotate(node.left);
             return this.#rightRotate(node);
         }
-        if (bal < -1 && this.compare(key, node.right.key) < 0) {
+        if (bal < -1 && this.balance(node.right) > 0) {
             node.right = this.#rightRotate(node.right);
             return this.#leftRotate(node);
         }
